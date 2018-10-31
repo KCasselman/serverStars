@@ -3,17 +3,17 @@ const sequelize = require('../db');
 const User = sequelize.import('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const validateSession = require('../middleware/validate-session')
+// const validateSession = require('../middleware/validate-session')
 // User.sync({force:"true"})
 
 
-router.post('/', function (req, res) {
-  const firstName = req.body.user.firstName;
-  const lastName = req.body.user.lastName;
-  const email = req.body.user.email;
-  const pin = req.body.user.pin;
-  const stars = req.body.user.stars;
-  const pass = req.body.user.pass
+router.post('/register', function (req, res) {
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const email = req.body.email;
+  const pin = req.body.pin;
+  const stars = req.body.stars;
+  const password = req.body.password
   
   User
   .create({
@@ -22,7 +22,7 @@ router.post('/', function (req, res) {
     email: email,
     pin: pin,
     stars: stars,
-    passwordhash: bcrypt.hashSync(pass, 10)
+    passwordhash: bcrypt.hashSync(password, 10)
   })
   .then(
     createSuccess = (user) => {
@@ -40,11 +40,11 @@ router.post('/', function (req, res) {
 });
 
 router.post('/login', function(req, res) {
-  User.findOne( {where: {email: req.body.user.email} } 
+  User.findOne( {where: {email: req.body.email} } 
   ).then(
     function (user) {
       if (user) {
-        bcrypt.compare(req.body.user.password, user.passwordhash, function (err, matches){
+        bcrypt.compare(req.body.password, user.passwordhash, function (err, matches){
           if (matches) {
             let token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: 60*60*24});
             res.json({
@@ -77,11 +77,11 @@ router.get("/", (req, res) =>
 // Update 
 router.put('/:id', function (req, res) {
   const data = req.params.id;
-  const firstName = req.body.user.firstName;
-  const lastName = req.body.user.lastName;
-  const email = req.body.user.email;
-  const pin = req.body.user.pin;
-  const stars = req.body.user.stars;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const email = req.body.email;
+  const pin = req.body.pin;
+  const stars = req.body.stars;
 
   User
     .update({
