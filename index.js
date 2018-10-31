@@ -28,6 +28,9 @@ app.listen(3000, function(){
 });
 
 =======
+var express = require('express')
+var app = express()
+var bodyParser = require('body-parser')
 var sequelize = require('./db')
 var goals = require('./controllers/goalsController.js')
 const port = process.env.PORT || 3000;
