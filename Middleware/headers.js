@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 module.exports = function(req, res, next){
 
   res.header('access-control-allow-origin', '*');
@@ -6,3 +7,11 @@ module.exports = function(req, res, next){
 
   next();
 };
+=======
+module.exports = function(req,res,next){
+    res.header('Access-Control-Allow-Orgin', "*")
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE')
+    res.header('Access-Control-Allow-Headers', "Origin, X-Requested With, Content-Type, Accept, Authorization")
+    next()
+}
+>>>>>>> dev-serv
