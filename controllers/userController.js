@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 // const validateSession = require('../middleware/validate-session')
 // User.sync({force:"true"})
 
+
 router.post('/', function (req, res) {
   const firstName = req.body.user.firstName;
   const lastName = req.body.user.lastName;
