@@ -1,35 +1,33 @@
-<<<<<<< HEAD
-const Sequelize = require('sequelize');
+// const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('serverStars', 'postgres', process.env.PASS ,{
-  host: 'localhost',
-  dialect: 'postgres'
-});
+// const sequelize = new Sequelize('serverStars', 'postgres', process.env.PASS ,{
+//   host: 'localhost',
+//   dialect: 'postgres'
+// });
 
-sequelize.authenticate().then(
-  function() {
-    console.log('Connect to postgres database');
-  },
-  function(err){
-    console.log(err);
-  }
-);
+// sequelize.authenticate().then(
+//   function() {
+//     console.log('Connect to postgres database');
+//   },
+//   function(err){
+//     console.log(err);
+//   }
+// );
 
-module.exports = sequelize;
-=======
+// module.exports = sequelize;
 const Sequelize = require('sequelize')
 require('dotenv').config();
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect: 'postgres',
+  dialect: 'postgres',
 })
 sequelize.authenticate().then(
-    function() {
-        console.log('Conneted to postgres DB')
-    },
-    function(err){
-        console.log(err)
-    }
-)
-module.exports = sequelize
->>>>>>> dev-serv
+  function() {
+    console.log('Conneted to postgres DB')
+  },
+  function(err){
+    console.log(err)
+  }
+  )
+  module.exports = sequelize
+ 

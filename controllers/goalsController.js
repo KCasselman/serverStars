@@ -3,7 +3,7 @@ var router = express.Router()
 var sequelize = require('../db')
 var validateSession = require('../middleware/validate-session')
 var Goals = sequelize.import('../models/goals.js')
-//Goals.sync({force:"true"})
+// Goals.sync({force:"true"})
 
 router.get('/getall', (req, res) => {
     Goals.findAll({})
@@ -13,19 +13,17 @@ router.get('/getall', (req, res) => {
 
 router.post('/create', function (req, res){
     var goal = req.body.goal
-    var stars = req.body.stars
+    var message = req.body.message
     var dueDate= req.body.dueDate
-    var pin= req.body.pin
     Goals.create({
         goal: goal,
-        stars: stars,
-        dueDate:dueDate,
-        pin:pin
+        message:message,
+        dueDate:dueDate
     }).then(
         function creatSucesss(goal){
             res.json({
                 goal:goal,
-                message:"What a goal."
+                message:"Goal Added."
             })
             function createError(err) {
                 res.send(500, err.message)
@@ -37,9 +35,8 @@ router.post('/create', function (req, res){
 router.put('/:id', (req, res, next) =>{
     Goals.update({
         goal:req.body.goal,
-        stars: req.body.stars,
+        message: req.body.message,
         dueDate: req.body.dueDate,
-        pin:req.body.pin
     },
      { returning: true, where: { id: req.params.id } },
     )

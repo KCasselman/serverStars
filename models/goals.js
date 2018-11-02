@@ -2,9 +2,8 @@
 module.exports = (sequelize, DataTypes) => {
   const goals = sequelize.define('goals', {
     goal: DataTypes.STRING,
-    stars: DataTypes.INTEGER,
+    message: DataTypes.STRING,
     dueDate: DataTypes.DATE,
-    pin: DataTypes.STRING
   }, {});
   goals.associate = function(models) {
     // associations can be defined here
