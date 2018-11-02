@@ -3,12 +3,8 @@ const sequelize = require('../db');
 const User = sequelize.import('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const validateSession = require('../middleware/validate-session')
+// const validateSession = require('../middleware/validate-session')
 // User.sync({force:"true"})
-
-
-
-
 
 router.post('/', function (req, res) {
   const firstName = req.body.user.firstName;
@@ -80,11 +76,11 @@ router.get("/", (req, res) =>
 // Update 
 router.put('/:id', function (req, res) {
   const data = req.params.id;
-  const firstName = req.body.user.firstName;
-  const lastName = req.body.user.lastName;
-  const email = req.body.user.email;
-  const pin = req.body.user.pin;
-  const stars = req.body.user.stars;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const email = req.body.email;
+  const pin = req.body.pin;
+  const stars = req.body.stars;
 
   User
     .update({
