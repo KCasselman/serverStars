@@ -1,22 +1,22 @@
 const router = require('express').Router()
 const sequelize = require('../db');
-const User = sequelize.import('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const validateSession = require('../middleware/validate-session')
+const User=sequelize.import('../models/user')
 // User.sync({force:"true"})
 
 
 
 
 
-router.post('/', function (req, res) {
-  const firstName = req.body.user.firstName;
-  const lastName = req.body.user.lastName;
-  const email = req.body.user.email;
-  const pin = req.body.user.pin;
-  const stars = req.body.user.stars;
-  const pass = req.body.user.pass
+router.post('/register', function (req, res) {
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const email = req.body.email;
+  const pin = req.body.pin;
+  const stars = req.body.stars;  
+  const password = req.body.password
 
   User
     .create({
@@ -25,7 +25,7 @@ router.post('/', function (req, res) {
       email: email,
       pin: pin,
       stars: stars,
-      passwordhash: bcrypt.hashSync(pass, 10)
+      passwordhash: bcrypt.hashSync(password, 10)
     })
     .then(
       createSuccess = (user) => {
@@ -42,12 +42,24 @@ router.post('/', function (req, res) {
     );
 });
 
+router.put('/:id', (req,res)=>{
+  User.findOne({where:{id:req.params.id}})
+  .then(user=>{user.createGoal({
+    userId:user.id,
+      message:req.body.message,
+      goal:req.body.goal,
+      starred:req.body.starred
+  })})
+  .then(goal=>res.json(goal))
+})
+
+
 router.post('/login', function (req, res) {
-  User.findOne({ where: { email: req.body.user.email } }
+  User.findOne({ where: { email: req.body.email } }
   ).then(
     function (user) {
       if (user) {
-        bcrypt.compare(req.body.user.password, user.passwordhash, function (err, matches) {
+        bcrypt.compare(req.body.password, user.passwordhash, function (err, matches) {
           if (matches) {
             let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 });
             res.json({
@@ -78,34 +90,34 @@ router.get("/", (req, res) =>
 
 
 // Update 
-router.put('/:id', function (req, res) {
-  const data = req.params.id;
-  const firstName = req.body.user.firstName;
-  const lastName = req.body.user.lastName;
-  const email = req.body.user.email;
-  const pin = req.body.user.pin;
-  const stars = req.body.user.stars;
+// router.put('/:id', function (req, res) {
+//   const data = req.params.id;
+//   const firstName = req.body.firstName;
+//   const lastName = req.body.lastName;
+//   const email = req.body.email;
+//   const pin = req.body.pin;
+//   const stars = req.body.stars;
 
-  User
-    .update({
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      pin: pin,
-      stars: stars
-    },
-      { where: { id: data, } }
-    ).then(
-      function updateSuccess(updatedStars) {
-        res.json({
-          updatedStars: updatedStars
-        });
-      },
-      function updateError(err) {
-        res.send(509, err.message);
-      }
-    )
-});
+//   User
+//     .update({
+//       firstName: firstName,
+//       lastName: lastName,
+//       email: email,
+//       pin: pin,
+//       stars: stars
+//     },
+//       { where: { id: data, } }
+//     ).then(
+//       function updateSuccess(updatedStars) {
+//         res.json({
+//           updatedStars: updatedStars
+//         });
+//       },
+//       function updateError(err) {
+//         res.send(509, err.message);
+//       }
+//     )
+// });
 
 //DELETE 
 router.delete("/:id", (req, res) =>
@@ -113,6 +125,7 @@ router.delete("/:id", (req, res) =>
     .then(data => res.status(200).json(data))
     .catch(err => res.status(500).json(req.errors))
 );
+
 
 
 module.exports = router
