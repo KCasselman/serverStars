@@ -8,6 +8,7 @@ const Goal = require('./controllers/goalsController');
 
 const bodyParser = require('body-parser');
 
+app.use(express.static(__dirname));
 
 app.use(bodyParser.json());
 
