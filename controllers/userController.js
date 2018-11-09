@@ -2,13 +2,8 @@ const router = require('express').Router()
 const sequelize = require('../db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const validateSession = require('../middleware/validate-session')
-const User=sequelize.import('../models/user')
-// User.sync({force:"true"})
-
-
-
-
+const validateSession = require('../middleware/validate-session');
+const User = sequelize.import('../models/user');
 
 router.post('/register', function (req, res) {
   const firstName = req.body.firstName;
@@ -42,16 +37,33 @@ router.post('/register', function (req, res) {
     );
 });
 
-router.put('/:id', (req,res)=>{
+//
+router.put('/goal/:id', (req,res)=>{
   User.findOne({where:{id:req.params.id}})
   .then(user=>{user.createGoal({
     userId:user.id,
-      message:req.body.message,
-      goal:req.body.goal,
+    goal:req.body.goal,
+    dueDate:req.body.goal,
       starred:req.body.starred
   })})
   .then(goal=>res.json(goal))
 })
+
+//Get single item for User
+router.get('/:id', function(req, res) {
+  const data = req.params.id;
+
+  User.findOne(
+      {where: {id: data}})
+    .then(
+      function findOneSuccess(data) {
+        res.json(data);
+      },
+      function findOneError(err) {
+        res.send(500, err.message);
+      }
+    );
+});
 
 
 router.post('/login', function (req, res) {
@@ -88,36 +100,35 @@ router.get("/", (req, res) =>
     .catch(err => res.status(500).json(req.errors))
 );
 
+//Update 
+router.put('/:id', function (req, res) {
+  const data = req.params.id;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const email = req.body.email;
+  const pin = req.body.pin;
+  const stars = req.body.stars;
 
-// Update 
-// router.put('/:id', function (req, res) {
-//   const data = req.params.id;
-//   const firstName = req.body.firstName;
-//   const lastName = req.body.lastName;
-//   const email = req.body.email;
-//   const pin = req.body.pin;
-//   const stars = req.body.stars;
-
-//   User
-//     .update({
-//       firstName: firstName,
-//       lastName: lastName,
-//       email: email,
-//       pin: pin,
-//       stars: stars
-//     },
-//       { where: { id: data, } }
-//     ).then(
-//       function updateSuccess(updatedStars) {
-//         res.json({
-//           updatedStars: updatedStars
-//         });
-//       },
-//       function updateError(err) {
-//         res.send(509, err.message);
-//       }
-//     )
-// });
+  User
+    .update({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      pin: pin,
+      stars: stars
+    },
+      { where: { id: data, } }
+    ).then(
+      function updateSuccess(updatedStars) {
+        res.json({
+          updatedStars: updatedStars
+        });
+      },
+      function updateError(err) {
+        res.send(509, err.message);
+      }
+    )
+});
 
 //DELETE 
 router.delete("/:id", (req, res) =>

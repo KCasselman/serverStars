@@ -6,9 +6,12 @@ goal:{
 message:{
     type:DataTypes.STRING
 },
+dueDate:{
+    type:DataTypes.DATE
+},
 starred:{
     type:DataTypes.BOOLEAN
-}
+},
 
     });
   };
