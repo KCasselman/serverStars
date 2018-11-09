@@ -3,7 +3,6 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const user = require('./controllers/userController');
-// const user = require('./controllers/newController');
 const Goal = require('./controllers/goalsController');
 
 const bodyParser = require('body-parser');

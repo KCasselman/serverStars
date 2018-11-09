@@ -8,7 +8,7 @@ message:{
 },
 starred:{
     type:DataTypes.BOOLEAN
-}
+},
 
     });
   };
