@@ -2,27 +2,23 @@ require('dotenv').config();
 
 const express = require('express');
 const app = express();
+
 const user = require('./controllers/userController');
-const sequelize = require('./db');
+
+const Goal = require('./controllers/goalsController');
+
 const bodyParser = require('body-parser');
 
+app.use(express.static(__dirname));
 
-sequelize.sync();
 app.use(bodyParser.json());
 
-
+app.use('/goal', Goal);
 app.use(require('./middleware/headers'));
 app.use('/user', user);
 
+require('./associations.js')
 
-//Protected Routes
-
-
-// app.use('/connection/test', function(req, res){
-//   res.send("This is an old test from a new server.");
-// })
-
-app.listen(3000, function(){
-  console.log('I can hear you now ${process.env.PORT}')
-});
-
+app.listen(`${process.env.PORT}`, function() {
+    console.log(`server on ${process.env.PORT}`)
+})

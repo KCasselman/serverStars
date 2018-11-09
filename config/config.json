@@ -1,7 +1,7 @@
 {
   "development": {
-    "username": "qlh",
-    "password": "P0stGr3sQu!ncy2()()18",
+    "username": "postgres",
+    "password": "z18@YyY!78",
     "database": "serverStars",
     "host": "localhost",
     "dialect": "postgres"
@@ -10,14 +10,14 @@
     "username": "root",
     "password": null,
     "database": "database_test",
-    "host": "127.0.0.1",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
     "password": null,
     "database": "database_production",
-    "host": "127.0.0.1",
+    "host": "localhost",
     "dialect": "mysql"
   }
 }

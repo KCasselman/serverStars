@@ -1,12 +1,69 @@
 const router = require('express').Router()
 const sequelize = require('../db');
-const User = sequelize.import('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const validateSession = require('../middleware/validate-session')
-// User.sync({force:"true"})
+const validateSession = require('../middleware/validate-session');
+const User = sequelize.import('../models/user');
 
+router.post('/register', function (req, res) {
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const email = req.body.email;
+  const pin = req.body.pin;
+  const stars = req.body.stars;  
+  const password = req.body.password
 
+  User
+    .create({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      pin: pin,
+      stars: stars,
+      passwordhash: bcrypt.hashSync(password, 10)
+    })
+    .then(
+      createSuccess = (user) => {
+        let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 })
+        res.json({
+          user: user,
+          message: 'created',
+          token: token
+        });
+      },
+      function createError(err) {
+        res.status(500, err.message);
+      }
+    );
+});
+
+//
+router.put('/goal/:id', (req,res)=>{
+  User.findOne({where:{id:req.params.id}})
+  .then(user=>{user.createGoal({
+    userId:user.id,
+    goal:req.body.goal,
+    dueDate:req.body.goal,
+      starred:req.body.starred
+  })})
+  .then(goal=>res.json(goal))
+})
+
+//Get single item for User
+router.get('/:id', function(req, res) {
+  const data = req.params.id;
+
+  User.findOne(
+      {where: {id: data}})
+    .then(
+      function findOneSuccess(data) {
+        res.json(data);
+      },
+      function findOneError(err) {
+        res.send(500, err.message);
+      }
+    );
+  
 router.post('/register', function (req, res) {
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
@@ -39,29 +96,31 @@ router.post('/register', function (req, res) {
   );
 });
 
-router.post('/login', function(req, res) {
-  User.findOne( {where: {email: req.body.user.email} } 
+
+router.post('/login', function (req, res) {
+  User.findOne({ where: { email: req.body.email } }
   ).then(
     function (user) {
       if (user) {
+
         bcrypt.compare(req.body.password, user.passwordhash, function (err, matches){
           if (matches) {
-            let token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: 60*60*24});
+            let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 });
             res.json({
               user: user,
               message: "successfully authenticated",
               token: token
             });
+          } else {
+            res.status(502).send({ error: "you failed, yo" });
+          }
+        });
       } else {
-        res.status(502).send({ error: "you failed, yo"});
+        res.status(500).send({ error: "failed to authenticate" });
       }
-    });
-  }else{
-      res.status(500).send({error: "failed to authenticate"});
-    }
-  },
-  function(err) {
-    res.status(501).send({error: "you failed, yo"});
+    },
+    function (err) {
+      res.status(501).send({ error: "you failed, yo" });
     }
   );
 });
@@ -73,8 +132,7 @@ router.get("/", (req, res) =>
     .catch(err => res.status(500).json(req.errors))
 );
 
-
-// Update 
+//Update 
 router.put('/:id', function (req, res) {
   const data = req.params.id;
   const firstName = req.body.firstName;
@@ -85,23 +143,23 @@ router.put('/:id', function (req, res) {
 
   User
     .update({
-  firstName: firstName,
-  lastName: lastName,
-  email: email,
-  pin: pin,
-  stars: stars
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      pin: pin,
+      stars: stars
     },
-    {where: {id: data,}}
-  ).then(
-    function updateSuccess(updatedStars){
-      res.json({
-        updatedStars: updatedStars
-    });
-  },
-  function updateError(err) {
-    res.send(509, err.message);
-    }
-  )
+      { where: { id: data, } }
+    ).then(
+      function updateSuccess(updatedStars) {
+        res.json({
+          updatedStars: updatedStars
+        });
+      },
+      function updateError(err) {
+        res.send(509, err.message);
+      }
+    )
 });
 
 //DELETE 
@@ -112,4 +170,5 @@ router.delete("/:id", (req, res) =>
 );
 
 
-module.exports = router;
+
+module.exports = router
