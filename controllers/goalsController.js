@@ -26,7 +26,8 @@ router.put('/addgoal/:id', (req,res)=>{
       userId:user.id,
       goal:req.body.goal,
         message:req.body.message,
-        starred:req.body.starred
+        starred:req.body.starred,
+        dueDaet: req.body.dueDate
     })})
     .then(goal=>res.json(goal))
   })
