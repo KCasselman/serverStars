@@ -1,29 +1,9 @@
-var express = require('express')
-var router = express.Router()
-var sequelize = require('../db')
-var validateSession = require('../middleware/validate-session')
-var Goal = sequelize.import('../models/goal.js')
-var User=sequelize.import('../models/user')
-
-
-// Goal.sync({force:"true"})   
-
-router.put('/:id', (res,req)=>{
-    User.findOne({where:{id:req.params.id}})
-    .then(user=>createGoals({
-      userId:user.id,
-      goal:req.body.goal,
-      message:req.body.message,
-      starred:req.body.starred
-  
-    }))
-    .then(goal=>res.json(goal))
-  }
-  )
-
-
-
-
+var express = require('express');
+var router = express.Router();
+var sequelize = require('../db');
+const validateSession = require('../middleware/validate-session');
+var Goal = sequelize.import('../models/goal');
+var User = sequelize.import('../models/user');
 
 router.get('/getall', (req, res) => {
     Goal.findAll({})
@@ -40,7 +20,7 @@ router.post('/create', function (req, res){
         goal: goal,
         message:message,
         dueDate:dueDate,
-        starred:starred,
+        starred:starred
     }).then(
         function creatSucesss(goal){
             res.json({
@@ -54,9 +34,7 @@ router.post('/create', function (req, res){
     )
 })
 
-
-
-router.put('/:id', (req, res, next) =>{
+router.put('/:id', (req, res, next) => {
     Goal.update({
         goal:req.body.goal,
         message: req.body.message,
