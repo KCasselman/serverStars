@@ -2,13 +2,8 @@ const router = require('express').Router()
 const sequelize = require('../db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const validateSession = require('../middleware/validate-session')
-const User=sequelize.import('../models/user')
-// User.sync({force:"true"})
-
-
-
-
+const validateSession = require('../middleware/validate-session');
+const User = sequelize.import('../models/user');
 
 router.post('/register', function (req, res) {
   const firstName = req.body.firstName;
@@ -42,16 +37,34 @@ router.post('/register', function (req, res) {
     );
 });
 
+//
 router.put('/goal/:id', (req,res)=>{
   User.findOne({where:{id:req.params.id}})
   .then(user=>{user.createGoal({
-    userId:user.id,
+      userId:user.id,
       message:req.body.message,
       goal:req.body.goal,
+      dueDate: req.body.dueDate,
       starred:req.body.starred
   })})
   .then(goal=>res.json(goal))
 })
+
+//Get single item for User
+router.get('/:id', function(req, res) {
+  const data = req.params.id;
+
+  User.findOne(
+      {where: {id: data}})
+    .then(
+      function findOneSuccess(data) {
+        res.json(data);
+      },
+      function findOneError(err) {
+        res.send(500, err.message);
+      }
+    );
+});
 
 
 router.post('/login', function (req, res) {
@@ -87,7 +100,6 @@ router.get("/", (req, res) =>
     .then(data => res.json(data))
     .catch(err => res.status(500).json(req.errors))
 );
-
 
 //Update 
 router.put('/:id', function (req, res) {
