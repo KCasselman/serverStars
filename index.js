@@ -2,7 +2,9 @@ require('dotenv').config();
 
 const express = require('express');
 const app = express();
-const User = require('./controllers/userController');
+
+const user = require('./controllers/userController');
+
 const Goal = require('./controllers/goalsController');
 
 const bodyParser = require('body-parser');
@@ -13,7 +15,7 @@ app.use(bodyParser.json());
 
 app.use('/goal', Goal);
 app.use(require('./middleware/headers'));
-app.use('/user', User);
+app.use('/user', user);
 
 require('./associations.js')
 

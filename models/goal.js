@@ -11,7 +11,7 @@ dueDate:{
 },
 starred:{
     type:DataTypes.BOOLEAN
-}
+},
 
     });
   };
