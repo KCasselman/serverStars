@@ -10,18 +10,31 @@ var User=sequelize.import('../models/user')
 
 
 //add a goal
-router.put('addgoal/:id', (res,req)=>{
-    User.findOne({ where:{id:req.params.id}})
-    .then(user=>createGoals({
+// router.put('/addgoal/:id', (res,req)=>{
+//     User.findOne({ where:{id:req.params.id}})
+//     .then(user=>{user.createGoal({
+//       userId:user.id,
+//       goal:req.body.goal,
+//       message:req.body.message,
+//       starred:req.body.starred
+  
+//     })})
+//     .then(goal=>res.json(goal))
+//     console.log(data)
+//   }
+//   )
+
+router.put('/addgoal/:id', (req,res)=>{
+    User.findOne({where:{id:req.params.id}})
+    .then(user=>{user.createGoal({
       userId:user.id,
       goal:req.body.goal,
-      message:req.body.message,
-      starred:req.body.starred
-  
-    }))
+        message:req.body.message,
+        starred:req.body.starred
+    })})
     .then(goal=>res.json(goal))
-  }
-  )
+  })
+  
 
 
 // update a goal

@@ -46,8 +46,8 @@ router.put('/goal/:id', (req,res)=>{
   User.findOne({where:{id:req.params.id}})
   .then(user=>{user.createGoal({
     userId:user.id,
+    goal:req.body.goal,
       message:req.body.message,
-      goal:req.body.goal,
       starred:req.body.starred
   })})
   .then(goal=>res.json(goal))
