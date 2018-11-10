@@ -64,6 +64,37 @@ router.get('/:id', function(req, res) {
         res.send(500, err.message);
       }
     );
+  
+router.post('/register', function (req, res) {
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const email = req.body.email;
+  const pin = req.body.pin;
+  const stars = req.body.stars;
+  const password = req.body.password
+  
+  User
+  .create({
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    pin: pin,
+    stars: stars,
+    passwordhash: bcrypt.hashSync(password, 10)
+  })
+  .then(
+    createSuccess = (user) => {
+      let token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: 60*60*24})
+      res.json({
+        user: user,
+        message: 'created',
+        token: token
+      });
+    },
+    function createError(err) {
+      res.status(500, err.message);
+    }
+  );
 });
 
 
@@ -72,7 +103,8 @@ router.post('/login', function (req, res) {
   ).then(
     function (user) {
       if (user) {
-        bcrypt.compare(req.body.password, user.passwordhash, function (err, matches) {
+
+        bcrypt.compare(req.body.password, user.passwordhash, function (err, matches){
           if (matches) {
             let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 });
             res.json({
