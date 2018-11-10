@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const validateSession = require('../middleware/validate-session');
 const User = sequelize.import('../models/user');
+// User.sync({force:true})
 
 router.post('/register', function (req, res) {
   const firstName = req.body.firstName;
