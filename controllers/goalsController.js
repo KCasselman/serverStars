@@ -35,13 +35,41 @@ router.put('/addgoal/:id', (req,res)=>{
   })
   
 
-// update a goal
-router.put('/updategoal/:id', (req,res) => {
-    Goal
-    .update(req.body, {where: {id:req.params.id}})
-    .then(goal=> res.json(goal))
-}
-)
+// // update a goal
+// router.put('/updategoal/:id', validateSession, (req,res) => {
+//     Goal
+//     .update(req.body, {where: {id:req.params.id}})
+//     .then(goal=> res.json(goal))
+// }
+// )
+
+// //Update Goal TEST
+// router.put('/updategoal/:id', function (req, res) {
+//     const data = req.params.id;
+//     const message = req.body.message;
+//     const goal = req.body.goal;
+//     const dueDate = req.body.dueDate;
+//     const starred = req.body.starred
+
+// Goal
+//   .update({
+//     message: message,
+//     goal: goal,
+//     dueDate: dueDate,
+//     starred: starred
+//   },
+//     { where: { id: data, } }
+//   ).then(
+//     function updateSuccess(updatedStars) {
+//       res.json({
+//         updatedStars: updatedStars
+//       });
+//     },
+//     function updateError(err) {
+//       res.send(509, err.message);
+//     }
+//   )
+// });
 
 //find one goal
 router.get('/onegoal/:id', (req,res)=>{
@@ -49,25 +77,17 @@ router.get('/onegoal/:id', (req,res)=>{
     .then(goallist => res.status(200).json(goallist))
 })
 
-//get user goals
-router.get('/userlist/:id', (req,res)=>{
-    Goal.findAll({where:{userId:req.params.id}})
-    .then(goallist => res.status(200).json(goallist))
-  })
-  
-
-
-//delete a goal
-router.delete('/delete/:id', (req, res) => {
-    var data = req.params.id;
-    Goal.destroy({
-        where: { id: data }
-    })
-        .then(Goal => res.status(200).json(Goal))
-        .catch(err => res.status(500).json({
-            error: err
-        })
-        )
-})
+// //delete a goal
+// router.delete('/delete/:id', (req, res) => {
+//     var data = req.params.id;
+//     Goal.destroy({
+//         where: { id: data }
+//     })
+//         .then(Goal => res.status(200).json(Goal))
+//         .catch(err => res.status(500).json({
+//             error: err
+//         })
+//         )
+// })
 
 module.exports= router;
