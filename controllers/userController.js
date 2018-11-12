@@ -4,7 +4,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const validateSession = require('../middleware/validate-session');
 const User = sequelize.import('../models/user');
-// User.sync({force:true})
 
 router.post('/register', function (req, res) {
   const firstName = req.body.firstName;
@@ -38,13 +37,20 @@ router.post('/register', function (req, res) {
     );
 });
 
-//this is the goal update
+//get user goals
+router.get('/userlist/:id', (req,res)=>{
+  Goal.findAll({where:{userId:req.params.id}})
+  .then(goallist => res.status(200).json(goallist))
+})
+
+//goal update
 router.put('/goal/:id', (req,res)=>{
   User.findOne({where:{id:req.params.id}})
   .then(user=>{user.createGoal({
-    userId:user.id,
-    goal:req.body.goal,
-    dueDate:req.body.goal,
+      userId:user.id,
+      message:req.body.message,
+      goal:req.body.goal,
+      dueDate: req.body.dueDate,
       starred:req.body.starred
   })})
   .then(goal=>res.json(goal))
@@ -64,23 +70,15 @@ router.get('/:id', function(req, res) {
         res.send(500, err.message);
       }
     );
-  
-router.post('/register', function (req, res) {
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
-  const email = req.body.email;
-  const pin = req.body.pin;
-  const stars = req.body.stars;
-  const password = req.body.password
-  
-  
-  router.post('/login', function (req, res) {
-    User.findOne({ where: { email: req.body.email } }
+});
+
+
+router.post('/login', function (req, res) {
+  User.findOne({ where: { email: req.body.email } }
   ).then(
     function (user) {
       if (user) {
-
-        bcrypt.compare(req.body.password, user.passwordhash, function (err, matches){
+        bcrypt.compare(req.body.password, user.passwordhash, function (err, matches) {
           if (matches) {
             let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 });
             res.json({
@@ -147,29 +145,5 @@ router.delete("/:id", (req, res) =>
 );
 
 
-module.exports = router
 
-            //   User
-            //   .create({
-            //     firstName: firstName,
-            //     lastName: lastName,
-            //     email: email,
-            //     pin: pin,
-            //     stars: stars,
-            //     passwordhash: bcrypt.hashSync(password, 10)
-            //   })
-            //   .then(
-            //     createSuccess = (user) => {
-            //       let token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: 60*60*24})
-            //       res.json({
-            //         user: user,
-            //         message: 'created',
-            //         token: token
-            //       });
-            //     },
-            //     function createError(err) {
-            //       res.status(500, err.message);
-            //     }
-            //   );
-            // });
-            
+module.exports = router

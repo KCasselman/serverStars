@@ -42,16 +42,19 @@ router.put('/updategoal/:id', (req,res) => {
     .then(goal=> res.json(goal))
 }
 )
-//get user goals
-router.get('/userlist/:id', (req,res)=>{
-    Goal.findAll({where:{userId:req.params.id}})
-    .then(goallist => res.status(200).json(goallist))
-})
 
+//find one goal
 router.get('/onegoal/:id', (req,res)=>{
     Goal.findOne({where:{id:req.params.id}})
     .then(goallist => res.status(200).json(goallist))
 })
+
+//get user goals
+router.get('/userlist/:id', (req,res)=>{
+    Goal.findAll({where:{userId:req.params.id}})
+    .then(goallist => res.status(200).json(goallist))
+  })
+  
 
 
 //delete a goal
