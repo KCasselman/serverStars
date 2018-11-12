@@ -9,4 +9,4 @@ GoalModel.belongsTo(UserModel)
 ///DO NOT CHANGE!!!!!!!!!
 
 sequelize.sync().then(console.log('tablesASSOCIATED'))
-
+// sequelize.sync({force:true})

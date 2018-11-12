@@ -5,19 +5,22 @@ var validateSession = require('../middleware/validate-session')
 var Goal = sequelize.import('../models/goal')
 var User=sequelize.import('../models/user')
 
-//add a goal
-router.put('addgoal/:id', (res,req)=>{
-    User.findOne({ where:{id:req.params.id}})
-    .then(user=>createGoals({
-      userId:user.id,
-      goal:req.body.goal,
-      message:req.body.message,
-      starred:req.body.starred
+// // add a goal
+// router.put('/addgoal/:id', (res,req)=>{
+//     User.findOne({ where:{id:req.params.id}})
+//     .then(user=>{user.createGoal({
+//       userId:user.id,
+//       goal:req.body.goal,
+//       message:req.body.message,
+//       dueDate: req.body.dueDate,
+//       starred: req.body.starred,
   
-    }))
-    .then(goal=>res.json(goal))
-  }
-  )
+//     })})
+//     .then(goal=>res.json(goal))
+//     console.log(data)
+//   }
+//   )
+  
 
 // update a goal
 router.put('/updategoal/:id', (req,res) => {
@@ -26,11 +29,13 @@ router.put('/updategoal/:id', (req,res) => {
     .then(goal=> res.json(goal))
 }
 )
-//get user goals
-router.get('/userlist/:id', (req,res)=>{
-    Goal.findAll({where:{userId:req.params.id}})
-    .then(goallist => res.status(200).json(goallist))
-})
+
+
+// //get user goals
+// router.get('/userlist/:id', (req,res)=>{
+//     Goal.findAll({where:{userId:req.params.id}})
+//     .then(goallist => res.status(200).json(goallist))
+// })
 
 
 //delete a goal

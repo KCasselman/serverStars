@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const validateSession = require('../middleware/validate-session');
 const User = sequelize.import('../models/user');
+const Goal = sequelize.import('../models/goal');
 
 router.post('/register', function (req, res) {
   const firstName = req.body.firstName;
@@ -41,11 +42,11 @@ router.post('/register', function (req, res) {
 router.put('/goal/:id', (req,res)=>{
   User.findOne({where:{id:req.params.id}})
   .then(user=>{user.createGoal({
-      userId:user.id,
-      message:req.body.message,
-      goal:req.body.goal,
-      dueDate: req.body.dueDate,
-      starred:req.body.starred
+    userId:user.id,
+    goal:req.body.goal,
+    message:req.body.message,
+    dueDate:req.body.dueDate,
+    starred:req.body.starred
   })})
   .then(goal=>res.json(goal))
 })
@@ -101,6 +102,12 @@ router.get("/", (req, res) =>
     .catch(err => res.status(500).json(req.errors))
 );
 
+//Get all user goals
+router.get('/userlist/:id', (req,res)=>{
+  Goal.findAll({where:{userId:req.params.id}})
+  .then(goallist => res.status(200).json(goallist))
+})
+
 //Update 
 router.put('/:id', function (req, res) {
   const data = req.params.id;
@@ -140,4 +147,4 @@ router.delete("/:id", (req, res) =>
 
 
 
-module.exports = router
+module.exports = router;
