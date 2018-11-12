@@ -65,6 +65,6 @@ Kristen Casselman
 Ieshia Hill 
 
 ## Acknlowledgements
-This application was created by the authors listed above while participating in a 12-week instensive Javascript course at the Eleven Fifty Academy.
+This application was created by the authors listed above while participating in a 12-week instensive Javascript course at the Eleven Fifty Academy (https://www.elevenfifty.org/).
 
 Shooting Stars was inspired by…(insert Kelly and Kristen's story if possible)
