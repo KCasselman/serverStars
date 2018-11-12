@@ -42,6 +42,8 @@ Install Express `npm install express`
 Install PG Admin `npm install pg` 
 <br />
 Install Nodemon `npm install nodemon`
+<br />
+Run `nodemon` in terman to startup server
 
 ## This Application Was Built With 
 Angular - The web framework used
