@@ -54,7 +54,7 @@ Heroku - The cloud platform used for deployment
 
 ## Authors 
 
-Below is a list of contributors who participated in this project:
+Below are a list of contributors who participated in this project:
 
 Quincy Hodge
 <br />
