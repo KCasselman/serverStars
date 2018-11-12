@@ -37,7 +37,13 @@ router.post('/register', function (req, res) {
     );
 });
 
-//
+//get user goals
+router.get('/userlist/:id', (req,res)=>{
+  Goal.findAll({where:{userId:req.params.id}})
+  .then(goallist => res.status(200).json(goallist))
+})
+
+//goal update
 router.put('/goal/:id', (req,res)=>{
   User.findOne({where:{id:req.params.id}})
   .then(user=>{user.createGoal({
@@ -101,35 +107,35 @@ router.get("/", (req, res) =>
     .catch(err => res.status(500).json(req.errors))
 );
 
-// Update 
-// router.put('/:id', function (req, res) {
-//   const data = req.params.id;
-//   const firstName = req.body.firstName;
-//   const lastName = req.body.lastName;
-//   const email = req.body.email;
-//   const pin = req.body.pin;
-//   const stars = req.body.stars;
+//Update 
+router.put('/:id', function (req, res) {
+  const data = req.params.id;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const email = req.body.email;
+  const pin = req.body.pin;
+  const stars = req.body.stars;
 
-//   User
-//     .update({
-//       firstName: firstName,
-//       lastName: lastName,
-//       email: email,
-//       pin: pin,
-//       stars: stars
-//     },
-//       { where: { id: data, } }
-//     ).then(
-//       function updateSuccess(updatedStars) {
-//         res.json({
-//           updatedStars: updatedStars
-//         });
-//       },
-//       function updateError(err) {
-//         res.send(509, err.message);
-//       }
-//     )
-// });
+  User
+    .update({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      pin: pin,
+      stars: stars
+    },
+      { where: { id: data, } }
+    ).then(
+      function updateSuccess(updatedStars) {
+        res.json({
+          updatedStars: updatedStars
+        });
+      },
+      function updateError(err) {
+        res.send(509, err.message);
+      }
+    )
+});
 
 //DELETE 
 router.delete("/:id", (req, res) =>
