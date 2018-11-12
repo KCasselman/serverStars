@@ -57,8 +57,11 @@ Heroku - The cloud platform used for deployment
 Below is a list of contributors who participated in this project:
 
 Quincy Hodge
+<br />
 Kelly Williams
+<br />
 Kristen Casselman 
+<br />
 Ieshia Hill 
 
 ## Acknlowledgements
