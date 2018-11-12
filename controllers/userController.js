@@ -6,7 +6,7 @@ const validateSession = require('../middleware/validate-session');
 const User = sequelize.import('../models/user');
 const Goal = sequelize.import('../models/goal');
 
-// User.sync({force:true})
+User.sync({force:true})
 
 
 router.post('/register', function (req, res) {

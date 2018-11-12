@@ -5,21 +5,7 @@ var validateSession = require('../middleware/validate-session')
 var Goal = sequelize.import('../models/goal')
 var User=sequelize.import('../models/user')
 
-// Goal.sync({force:true})
-//add a goal
-// router.put('/addgoal/:id', (res,req)=>{
-//     User.findOne({ where:{id:req.params.id}})
-//     .then(user=>{user.createGoal({
-//       userId:user.id,
-//       goal:req.body.goal,
-//       message:req.body.message,
-//       starred:req.body.starred
-  
-//     })})
-    // .then(goal=>res.json(goal))
-//     console.log(data)
-//   }
-//   )
+
 
 
 router.put('/addgoal/:id', (req,res)=>{
@@ -36,7 +22,7 @@ router.put('/addgoal/:id', (req,res)=>{
   
 
 // update a goal
-router.put('/updategoal/:id', (req,res) => {
+router.put('/updategoal/:id', validateSession, (req,res) => {
     Goal
     .update(req.body, {where: {id:req.params.id}})
     .then(goal=> res.json(goal))
