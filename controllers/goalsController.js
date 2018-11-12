@@ -21,13 +21,6 @@ router.put('/addgoal/:id', (req,res)=>{
   })
   
 
-// update a goal
-router.put('/updategoal/:id', validateSession, (req,res) => {
-    Goal
-    .update(req.body, {where: {id:req.params.id}})
-    .then(goal=> res.json(goal))
-}
-)
 
 //find one goal
 router.get('/onegoal/:id', (req,res)=>{
@@ -36,18 +29,6 @@ router.get('/onegoal/:id', (req,res)=>{
 })
 
 
-  
-//delete a goal
-router.delete('/delete/:id', (req, res) => {
-    var data = req.params.id;
-    Goal.destroy({
-        where: { id: data }
-    })
-        .then(Goal => res.status(200).json(Goal))
-        .catch(err => res.status(500).json({
-            error: err
-        })
-        )
-})
+
 
 module.exports= router;
