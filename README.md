@@ -60,6 +60,6 @@ Kristen Casselman
 Ieshia Hill 
 
 ## Acknlowledgements
-This application was created by the authors listed above for their Red Badge assignment at the Eleven Fifty Academy.
+This application was created by the authors listed above while participating in a 12-week instensive Javascript course at the Eleven Fifty Academy.
 
 Shooting Stars was inspired by…(insert Kelly and Kristen's story if possible)
