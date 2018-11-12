@@ -6,6 +6,10 @@ const validateSession = require('../middleware/validate-session');
 const User = sequelize.import('../models/user');
 const Goal = sequelize.import('../models/goal');
 
+
+// User.sync({force:true})
+
+
 router.post('/register', function (req, res) {
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
@@ -57,18 +61,6 @@ router.put('/goal/:id', (req,res)=>{
   .then(goal=>res.json(goal))
 })
 
-// //goal update
-// router.put('/updategoal/:id', (req,res)=>{
-//   User.findOne({where:{id:req.params.id}})
-//   .then(user=>{user.update({
-//       userId:user.id,
-//       message:req.body.message,
-//       goal:req.body.goal,
-//       dueDate: req.body.dueDate,
-//       starred:req.body.starred
-//   })})
-//   .then(goal=>res.json(goal))
-// })
 
 //Get single item for User
 router.get('/:id', function(req, res) {
@@ -124,21 +116,17 @@ router.get("/", (req, res) =>
 //Update User
 router.put('/:id', function (req, res) {
   const data = req.params.id;
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
   const email = req.body.email;
   const pin = req.body.pin;
   const stars = req.body.stars;
-  const password = req.body.password
-
-  User
+  const password = req.body.password;
+    User
     .update({
-      firstName: firstName,
-      lastName: lastName,
       email: email,
       pin: pin,
       stars: stars,
-      password: password,
+      password:bcrypt.hashSync(password, 10),
+
     },
       { where: { id: data, } }
     ).then(
