@@ -6,7 +6,7 @@ The child is awarded a star each time a goal is completed and the stars are trac
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.2.
 
 # Getting Started
-These instructions will get you a copy of the project up and allow you to to run the project on your local machine for development and testing purposes. 
+These instructions will get you a copy of the project up and allow you to to run the project on your local machine for development and testing purposes:
 
 # Installation 
 You can clone the repository for this application here: 
