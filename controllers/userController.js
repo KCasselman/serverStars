@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const validateSession = require('../middleware/validate-session');
 const User = sequelize.import('../models/user');
+const Goal = sequelize.import('../models/goal')
 
 router.post('/register', function (req, res) {
   const firstName = req.body.firstName;
@@ -20,7 +21,7 @@ router.post('/register', function (req, res) {
       email: email,
       pin: pin,
       stars: stars,
-      passwordhash: bcrypt.hashSync(password, 10)
+      password: bcrypt.hashSync(password, 10)
     })
     .then(
       createSuccess = (user) => {

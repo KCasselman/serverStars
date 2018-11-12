@@ -15,7 +15,7 @@ pin:{
 stars:{
     type:DataTypes.INTEGER
 },
-passwordhash:{
+password:{
     type:DataTypes.STRING
 }
 

@@ -49,14 +49,8 @@ router.get('/onegoal/:id', (req,res)=>{
     .then(goallist => res.status(200).json(goallist))
 })
 
-//get user goals
-router.get('/userlist/:id', (req,res)=>{
-    Goal.findAll({where:{userId:req.params.id}})
-    .then(goallist => res.status(200).json(goallist))
-  })
+
   
-
-
 //delete a goal
 router.delete('/delete/:id', (req, res) => {
     var data = req.params.id;
