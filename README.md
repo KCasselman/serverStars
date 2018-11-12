@@ -1,5 +1,5 @@
 # Shooting Stars
-Shooting Stars is a productivity tool aimed to provide a structured environment for children with special needs. The application allows parents, care givers and teachers the ability to set daily goals to aid in providing a visual representation of a child’s day, teach them important skills and encourage independence.  
+Shooting Stars is a productivity tool aimed to provide a structured environment for children with special needs. The application allows parents, care givers and teachers the ability to set daily goals that aid in providing a visual representation of a child’s day, teach them important skills and encourage independence.  
 
 The child is awarded a star each time a goal is completed and the stars are tracked using a points system to allow the parent/guardian to reward the child once a certain amount of stars have been earned.
 
