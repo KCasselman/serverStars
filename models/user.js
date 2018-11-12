@@ -2,15 +2,12 @@ module.exports =function(sequelize, DataTypes){
     return sequelize.define('user', {
 firstName:{
     type:DataTypes.STRING,
-    allowNull:false
 },
 lastName:{
     type:DataTypes.STRING,
-    allowNull:false
 },
 email:{
     type: DataTypes.STRING,
-    allowNull:false,
     validate: {
         isEmail: {
         msg: "Email address must be valid."
@@ -19,7 +16,6 @@ email:{
 },
 pin:{
     type:DataTypes.INTEGER,
-    allowNull:false,
     validate: {
         len: {
             args:4,
@@ -32,7 +28,6 @@ stars:{
 },
 password:{
     type:DataTypes.STRING,
-    allowNull:false,
     validate: {
         len: {
             args:6,
