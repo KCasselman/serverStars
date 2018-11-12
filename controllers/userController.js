@@ -125,7 +125,7 @@ router.put('/:id', function (req, res) {
       email: email,
       pin: pin,
       stars: stars,
-      password:bcrypt.hashSync(password, 10),
+      password:bcrypt.hashSync(password, 10)  
 
     },
       { where: { id: data, } }
@@ -136,7 +136,28 @@ router.put('/:id', function (req, res) {
         });
       },
       function updateError(err) {
-        res.send(509, err.message);
+        res.send(500, err.message);
+      }
+    )
+});
+
+//updating user stars
+router.put('/stars/:id', function (req, res) {
+  const data = req.params.id;
+const stars = req.body.stars;
+    User
+    .update({
+     stars: stars,
+     },
+      { where: { id: data, } }
+    ).then(
+      function updateSuccess(updatedStars) {
+        res.json({
+          updatedStars: updatedStars
+        });
+      },
+      function updateError(err) {
+        res.send(500, err.message);
       }
     )
 });
@@ -154,14 +175,14 @@ router.put('/updategoal/:id', function (req, res) {
       const message = req.body.message;
       const goal = req.body.goal;
       const dueDate = req.body.dueDate;
-      const starred = req.body.starred
+      const stars = req.body.stars
 
   Goal
     .update({
       message: message,
       goal: goal,
       dueDate: dueDate,
-      starred: starred
+      stars: stars
     },
       { where: { id: data, } }
     ).then(
@@ -173,7 +194,7 @@ router.put('/updategoal/:id', function (req, res) {
       function updateError(err) {
         res.send(509, err.message);
       }
-    )
+    ) 
 });
 
 //delete a goal TEST
