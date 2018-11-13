@@ -1,7 +1,6 @@
 var express = require('express')
 var router = express.Router()
 var sequelize = require('../db')
-var validateSession = require('../middleware/validate-session')
 var Goal = sequelize.import('../models/goal')
 var User=sequelize.import('../models/user')
 
