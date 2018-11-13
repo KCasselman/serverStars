@@ -1,5 +1,5 @@
 {
-  "name": "serverStars",
+  "name": "red-badge",
   "version": "1.0.0",
   "description": "red badge project",
   "main": "index.js",
@@ -28,8 +28,8 @@
    "heroku"
   ],
   "engines": {
-    "node": "8.11.4"
+    "node": "8.12.0"
   },
-  "author": "Kelly, Quincy, Iesha, Kristin",
+  "author": "Kelly, Quincy, Ieshia, Kristen",
   "license": "ISC"
 }
