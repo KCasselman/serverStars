@@ -175,14 +175,14 @@ router.put('/updategoal/:id', function (req, res) {
       const message = req.body.message;
       const goal = req.body.goal;
       const dueDate = req.body.dueDate;
-      const stars = req.body.stars
+      const starred = req.body.starred
 
   Goal
     .update({
       message: message,
       goal: goal,
       dueDate: dueDate,
-      stars: stars
+      starred: starred
     },
       { where: { id: data, } }
     ).then(
