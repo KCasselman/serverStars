@@ -4,6 +4,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const validateSession = require('../middleware/validate-session');
 const User = sequelize.import('../models/user');
+const Goal = sequelize.import('../models/goal');
+
+
+// User.sync({force:true})
+
 
 router.post('/register', function (req, res) {
   const firstName = req.body.firstName;
@@ -20,7 +25,7 @@ router.post('/register', function (req, res) {
       email: email,
       pin: pin,
       stars: stars,
-      passwordhash: bcrypt.hashSync(password, 10)
+      password: bcrypt.hashSync(password, 10)
     })
     .then(
       createSuccess = (user) => {
@@ -43,7 +48,7 @@ router.get('/userlist/:id', (req,res)=>{
   .then(goallist => res.status(200).json(goallist))
 })
 
-//goal update
+//goal create
 router.put('/goal/:id', (req,res)=>{
   User.findOne({where:{id:req.params.id}})
   .then(user=>{user.createGoal({
@@ -55,6 +60,7 @@ router.put('/goal/:id', (req,res)=>{
   })})
   .then(goal=>res.json(goal))
 })
+
 
 //Get single item for User
 router.get('/:id', function(req, res) {
@@ -78,7 +84,7 @@ router.post('/login', function (req, res) {
   ).then(
     function (user) {
       if (user) {
-        bcrypt.compare(req.body.password, user.passwordhash, function (err, matches) {
+        bcrypt.compare(req.body.password, user.password, function (err, matches) {
           if (matches) {
             let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 });
             res.json({
@@ -107,21 +113,75 @@ router.get("/", (req, res) =>
     .catch(err => res.status(500).json(req.errors))
 );
 
-//Update 
+//Update User
 router.put('/:id', function (req, res) {
   const data = req.params.id;
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
   const email = req.body.email;
   const pin = req.body.pin;
   const stars = req.body.stars;
-
-  User
+  const password = req.body.password;
+    User
     .update({
-      firstName: firstName,
-      lastName: lastName,
       email: email,
       pin: pin,
+      stars: stars,
+      password:bcrypt.hashSync(password, 10)  
+
+    },
+      { where: { id: data, } }
+    ).then(
+      function updateSuccess(updatedStars) {
+        res.json({
+          updatedStars: updatedStars
+        });
+      },
+      function updateError(err) {
+        res.send(500, err.message);
+      }
+    )
+});
+
+//updating user stars
+router.put('/stars/:id', function (req, res) {
+  const data = req.params.id;
+const stars = req.body.stars;
+    User
+    .update({
+     stars: stars,
+     },
+      { where: { id: data, } }
+    ).then(
+      function updateSuccess(updatedStars) {
+        res.json({
+          updatedStars: updatedStars
+        });
+      },
+      function updateError(err) {
+        res.send(500, err.message);
+      }
+    )
+});
+
+//DELETE 
+router.delete("/:id", (req, res) =>
+  User.destroy({ where: { id: req.params.id } })
+    .then(data => res.status(200).json(data))
+    .catch(err => res.status(500).json(req.errors))
+);
+
+//Update Goal TEST
+router.put('/updategoal/:id', function (req, res) {
+      const data = req.params.id;
+      const message = req.body.message;
+      const goal = req.body.goal;
+      const dueDate = req.body.dueDate;
+      const stars = req.body.stars
+
+  Goal
+    .update({
+      message: message,
+      goal: goal,
+      dueDate: dueDate,
       stars: stars
     },
       { where: { id: data, } }
@@ -134,15 +194,21 @@ router.put('/:id', function (req, res) {
       function updateError(err) {
         res.send(509, err.message);
       }
-    )
+    ) 
 });
 
-//DELETE 
-router.delete("/:id", (req, res) =>
-  User.destroy({ where: { id: req.params.id } })
-    .then(data => res.status(200).json(data))
-    .catch(err => res.status(500).json(req.errors))
-);
+//delete a goal TEST
+router.delete('/delete/:id', (req, res) => {
+  var data = req.params.id;
+  Goal.destroy({
+      where: { id: data }
+  })
+      .then(Goal => res.status(200).json(Goal))
+      .catch(err => res.status(500).json({
+          error: err
+      })
+      )
+})
 
 
 
