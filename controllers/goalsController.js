@@ -5,6 +5,7 @@ var Goal = sequelize.import('../models/goal')
 var User=sequelize.import('../models/user')
 
 
+// Goal.sync({force:true})
 
 
 router.put('/addgoal/:id', (req,res)=>{

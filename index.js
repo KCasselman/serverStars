@@ -19,6 +19,6 @@ app.use('/user', user);
 
 require('./associations.js')
 
-app.listen(`${process.env.PORT}`, function() {
+app.listen(process.env.PORT, function() {
     console.log(`server on ${process.env.PORT}`)
 })
