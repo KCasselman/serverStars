@@ -3,7 +3,7 @@ var router = express.Router()
 var sequelize = require('../db')
 var Goal = sequelize.import('../models/goal')
 var User=sequelize.import('../models/user')
-const validateSession= require('../middleware/validate-session')
+const validateSession= require('../Middleware/validate-session')
 
 // Goal.sync({force:true})
 

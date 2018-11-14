@@ -14,7 +14,7 @@ sequelize.sync();
 app.use(express.static(__dirname));
 
 app.use(bodyParser.json());
-app.use(require('./middleware/headers'));
+app.use(require('./Middleware/headers'));
 app.use('/user', user);
 app.use('/goal', Goal);
 

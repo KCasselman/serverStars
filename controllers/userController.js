@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = sequelize.import('../models/user');
 const Goal = sequelize.import('../models/goal');
-const validateSession= require('../middleware/validate-session')
+const validateSession= require('../Middleware/validate-session')
 
 
 // User.sync({force:true})
