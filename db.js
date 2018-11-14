@@ -12,4 +12,4 @@ sequelize.authenticate().then(
         console.log(err)
     }
 )
-module.exports = sequelize
+module.exports = sequelize;

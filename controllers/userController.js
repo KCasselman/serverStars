@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = sequelize.import('../models/user');
 const Goal = sequelize.import('../models/goal');
+const validateSession= require('../middleware/validate-session')
 
 
 // User.sync({force:true})
@@ -14,7 +15,7 @@ router.post('/register', function (req, res) {
   const lastName = req.body.lastName;
   const email = req.body.email;
   const pin = req.body.pin;
-  const stars = req.body.stars;  
+  const stars = req.body.stars; 
   const password = req.body.password
 
   User
@@ -28,11 +29,11 @@ router.post('/register', function (req, res) {
     })
     .then(
       createSuccess = (user) => {
-        let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 })
+        let sessionToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 })
         res.json({
           user: user,
           message: 'created',
-          token: token
+          sessionToken: sessionToken
         });
       },
       function createError(err) {
@@ -48,7 +49,7 @@ router.get('/userlist/:id', (req,res)=>{
 })
 
 //goal create
-router.put('/goal/:id', (req,res)=>{
+router.put('/goal/:id',validateSession, (req,res)=>{
   User.findOne({where:{id:req.params.id}})
   .then(user=>{user.createGoal({
       userId:user.id,
@@ -62,7 +63,7 @@ router.put('/goal/:id', (req,res)=>{
 
 
 //Get single item for User
-router.get('/:id', function(req, res) {
+router.get('/:id',validateSession, function(req, res) {
   const data = req.params.id;
 
   User.findOne(
@@ -78,7 +79,7 @@ router.get('/:id', function(req, res) {
 });
 
 
-router.post('/login', function (req, res) {
+router.post('/login',validateSession, function (req, res) {
   User.findOne({ where: { email: req.body.email } }
   ).then(
     function (user) {
@@ -89,7 +90,7 @@ router.post('/login', function (req, res) {
             res.json({
               user: user,
               message: "successfully authenticated",
-              token: token
+              sessionToken: token
             });
           } else {
             res.status(502).send({ error: "you failed, yo" });
@@ -106,14 +107,14 @@ router.post('/login', function (req, res) {
 });
 
 //GET ALL
-router.get("/", (req, res) =>
+router.get("/",validateSession, (req, res) =>
   User.findAll()
     .then(data => res.json(data))
     .catch(err => res.status(500).json(req.errors))
 );
 
 //Update User
-router.put('/:id', function (req, res) {
+router.put('/:id',validateSession, function (req, res) {
   const data = req.params.id;
   const email = req.body.email;
   const pin = req.body.pin;
@@ -141,7 +142,7 @@ router.put('/:id', function (req, res) {
 });
 
 //updating user stars
-router.put('/stars/:id', function (req, res) {
+router.put('/stars/:id',validateSession, function (req, res) {
   const data = req.params.id;
 const stars = req.body.stars;
     User
@@ -162,14 +163,14 @@ const stars = req.body.stars;
 });
 
 //DELETE 
-router.delete("/:id", (req, res) =>
+router.delete("/:id",validateSession,  (req, res) =>
   User.destroy({ where: { id: req.params.id } })
     .then(data => res.status(200).json(data))
     .catch(err => res.status(500).json(req.errors))
-);
+); 
 
 //Update Goal TEST
-router.put('/updategoal/:id', function (req, res) {
+router.put('/updategoal/:id',validateSession, function (req, res) {
       const data = req.params.id;
       const message = req.body.message;
       const goal = req.body.goal;
@@ -197,7 +198,7 @@ router.put('/updategoal/:id', function (req, res) {
 });
 
 //delete a goal TEST
-router.delete('/delete/:id', (req, res) => {
+router.delete('/delete/:id',validateSession, (req, res) => {
   var data = req.params.id;
   Goal.destroy({
       where: { id: data }

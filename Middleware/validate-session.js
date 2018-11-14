@@ -20,7 +20,7 @@ const validateSession = function(req, res, next) {
               res.status(401).send({error: 'Not authorized'});
             });
           } else {
-            res.status(400).send({error: 'Not authorized'});
+            res.status(400).send({error: 'Not authorized'});  
            }
       });
     }
