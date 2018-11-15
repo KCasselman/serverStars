@@ -79,18 +79,18 @@ router.get('/:id',validateSession, function(req, res) {
 });
 
 
-router.post('/login',validateSession, function (req, res) {
+router.post('/login', function (req, res) {
   User.findOne({ where: { email: req.body.email } }
   ).then(
     function (user) {
       if (user) {
         bcrypt.compare(req.body.password, user.password, function (err, matches) {
           if (matches) {
-            let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 });
+            let sessionToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 });
             res.json({
               user: user,
               message: "successfully authenticated",
-              sessionToken: token
+              sessionToken: sessionToken
             });
           } else {
             res.status(502).send({ error: "you failed, yo" });
@@ -175,14 +175,14 @@ router.put('/updategoal/:id',validateSession, function (req, res) {
       const message = req.body.message;
       const goal = req.body.goal;
       const dueDate = req.body.dueDate;
-      const stars = req.body.stars
+      const starred = req.body.starred
 
   Goal
     .update({
       message: message,
       goal: goal,
       dueDate: dueDate,
-      stars: stars
+      starred: starred
     },
       { where: { id: data, } }
     ).then(
